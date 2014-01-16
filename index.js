@@ -51,6 +51,11 @@ module.exports = function(opts, data) {
           data.extensions = opts.extensions;
           delete opts.extensions;
       }
+     
+      if(opts.alias) {
+          data.alias = opts.alias;
+          delete opts.alias;
+      }
 
       if(opts.transform) opts.transform.forEach(function(transform){
         bundler.transform(transform);
