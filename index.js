@@ -2,6 +2,7 @@ var es = require('event-stream');
 var gutil = require('gulp-util');
 var browserify = require('browserify');
 var shim = require('browserify-shim');
+var mold = require('mold-source-map');
 var path = require('path');
 var util = require('util');
 var Readable = require('stream').Readable || require('readable-stream');
@@ -74,7 +75,7 @@ module.exports = function(opts, data) {
 
       self.emit('prebundle', bundler);
       
-      var bStream = bundler.bundle(opts);
+      var bStream = bundler.bundle(opts).pipe(mold.transformSourcesRelativeTo(opts.sourceMapRoot));
       bStream.pipe(es.wait(function(err, src){
         var newFile = new gutil.File({
           cwd: file.cwd,
