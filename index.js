@@ -75,7 +75,10 @@ module.exports = function(opts, data) {
 
       self.emit('prebundle', bundler);
       
-      var bStream = bundler.bundle(opts).pipe(mold.transformSourcesRelativeTo(opts.sourceMapRoot));
+      var bStream = bundler.bundle(opts);
+      if (opts.sourceMapRoot) {
+        bStream = bStream.pipe(mold.transformSourcesRelativeTo(opts.sourceMapRoot));
+      }
       bStream.pipe(es.wait(function(err, src){
         var newFile = new gutil.File({
           cwd: file.cwd,
